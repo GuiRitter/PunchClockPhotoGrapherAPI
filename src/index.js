@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/logger_simple/api/user', userRoute);
+app.use('/punch_clock_photo_grapher/api/user', userRoute);
 
 app.listen(process.env.PORT, '127.0.0.1').on('listening', () => {
 	console.log(`${(new Date()).toISOString()} are live on ${process.env.PORT}`);
