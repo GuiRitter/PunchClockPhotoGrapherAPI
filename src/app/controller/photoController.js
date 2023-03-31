@@ -17,7 +17,7 @@ import { getLog } from '../util/log';
 const log = getLog('photoController');
 
 export const get = async (req, res) => {
-	const query = 'SELECT date_time, data_uri FROM photo ORDER BY date_time;';
+	const query = `SELECT date_time, DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) FROM photo ORDER BY date_time;`;
 	try {
 		const { rows } = await dbQuery.query(query);
 		return res.status(status.success).send(rows);
