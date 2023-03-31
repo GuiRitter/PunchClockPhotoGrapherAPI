@@ -3,6 +3,7 @@ import express from 'express';
 import 'babel-polyfill';
 import cors from 'cors';
 
+import photoRoute from './app/route/photoRoute';
 import userRoute from './app/route/userRoute';
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.use('/punch_clock_photo_grapher/api/photo', photoRoute);
 app.use('/punch_clock_photo_grapher/api/user', userRoute);
 
 app.listen(process.env.PORT, '127.0.0.1').on('listening', () => {
