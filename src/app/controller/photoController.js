@@ -28,7 +28,7 @@ export const get = async (req, res) => {
 
 export const put = async (req, res) => {
 	const { dateTime, dataURI } = req.body;
-	log('put', { dateTime, dataURI });
+	log('put', { dateTime, dataURI: dataURI ? `${dataURI.substring(0, 26)}...` : dataURI });
 	if (!isNonEmptyString(dataURI)) {
 		errorMessage.error = 'No content.';
 		return res.status(status.bad).send(errorMessage);
