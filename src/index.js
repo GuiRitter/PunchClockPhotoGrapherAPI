@@ -11,8 +11,8 @@ const app = express();
 // Add middleware for parsing URL encoded bodies (which are usually sent by browser)
 app.use(cors());
 // Add middleware for parsing JSON and urlencoded data and populating `req.body`
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
+app.use(express.json({ limit: '50mb' }));
 
 app.use('/punch_clock_photo_grapher/api/photo', photoRoute);
 app.use('/punch_clock_photo_grapher/api/user', userRoute);
