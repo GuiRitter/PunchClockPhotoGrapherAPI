@@ -17,12 +17,23 @@ import { getLog } from '../util/log';
 const log = getLog('photoController');
 
 export const get = async (req, res) => {
+	const { dateTime } = req.query;
+	const query = `SELECT date_time, data_uri FROM photo WHERE date_time like $1;`;
+	try {
+		const { rows } = await dbQuery.query(query, [dateTime]);
+		return res.status(status.success).send(rows);
+	} catch (error) {
+		return buildError(log, 'get', error, res);
+	}
+};
+
+export const list = async (req, res) => {
 	const query = `SELECT date_time, DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) AS week FROM photo ORDER BY date_time;`;
 	try {
 		const { rows } = await dbQuery.query(query);
 		return res.status(status.success).send(rows);
 	} catch (error) {
-		return buildError(log, 'get', error, res);
+		return buildError(log, 'list', error, res);
 	}
 };
 
