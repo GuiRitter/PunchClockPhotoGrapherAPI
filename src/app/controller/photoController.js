@@ -16,6 +16,26 @@ import { getLog } from '../util/log';
 
 const log = getLog('photoController');
 
+export const compose = async (req, res) => {
+	const { week } = req.week;
+	const weekQuery = `SELECT date_time FROM photo WHERE DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) = $1`;
+	const photoQuery = `SELECT data_uri FROM photo WHERE date_time like $1`;
+	try {
+		const { photoRows } = await dbQuery.query(weekQuery, [week]);
+		const list = await Promise.all(rows.map(async row => {
+			const { photoRow } = await dbQuery.query(photoQuery, [row.date_time]);
+			return {
+				dateTime: row.date_time,
+				photo: sharp(photoRow[0].data_uri)
+			};
+		}));
+		console.log(list);
+		return res.status(status.success).send('test');
+	} catch (error) {
+		return buildError(log, 'get', error, res);
+	}
+};
+
 export const get = async (req, res) => {
 	const { dateTime } = req.query;
 	const query = `SELECT date_time, data_uri FROM photo WHERE date_time like $1;`;
