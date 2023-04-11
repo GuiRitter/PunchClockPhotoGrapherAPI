@@ -33,7 +33,7 @@ export const compose = async (req, res) => {
 				photo: sharp(photoRow[0].data_uri)
 			};
 		}));
-		console.log(list);
+		log('compose', { list });
 
 		const calendar = await list.reduce(async (previousCalendar, currentPhoto) => {
 			const metadata = await currentPhoto.photo.metadata();
