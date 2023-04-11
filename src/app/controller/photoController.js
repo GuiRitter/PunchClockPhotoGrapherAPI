@@ -28,6 +28,7 @@ export const compose = async (req, res) => {
 		log('compose', { photoRows });
 		const list = await Promise.all(photoRows.map(async row => {
 			const { rows: photoRow } = await dbQuery.query(photoQuery, [row.date_time]);
+			log('compose', { data_uri: photoRow[0].data_uri.length });
 			return {
 				dateTime: row.date_time,
 				photo: sharp(photoRow[0].data_uri)
