@@ -22,7 +22,7 @@ export const compose = async (req, res) => {
 	const photoQuery = `SELECT data_uri FROM photo WHERE date_time like $1`;
 	try {
 		const { photoRows } = await dbQuery.query(weekQuery, [week]);
-		const list = await Promise.all(rows.map(async row => {
+		const list = await Promise.all(photoRows.map(async row => {
 			const { photoRow } = await dbQuery.query(photoQuery, [row.date_time]);
 			return {
 				dateTime: row.date_time,
@@ -32,7 +32,7 @@ export const compose = async (req, res) => {
 		console.log(list);
 		return res.status(status.success).send('test');
 	} catch (error) {
-		return buildError(log, 'get', error, res);
+		return buildError(log, 'compose', error, res);
 	}
 };
 
