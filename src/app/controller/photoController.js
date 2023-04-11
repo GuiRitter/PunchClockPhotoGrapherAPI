@@ -76,7 +76,13 @@ export const compose = async (req, res) => {
 			(await Promise.all(Object.values(calendar.dateList).map(
 				async (dateValue, dateIndex) => await Promise.all(Object.values(dateValue).map(
 					async (photoValue, photoIndex) => ({
-						input: await photoValue.png().toBuffer(),
+						input: await (async () => {
+							log('compose', { photoValue });
+							log('compose', { 'photoValue.png': photoValue.png() });
+							log('compose', { 'photoValue.png.toBuffer': photoValue.png().toBuffer() });
+							log('compose', { 'await photoValue.png.toBuffer': await photoValue.png().toBuffer() });
+							return await photoValue.png().toBuffer();
+						})(),
 						top: photoIndex * calendar.height,
 						left: dateIndex * calendar.width
 					})
