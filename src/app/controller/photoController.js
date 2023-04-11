@@ -22,6 +22,7 @@ export const compose = async (req, res) => {
 	const photoQuery = `SELECT data_uri FROM photo WHERE date_time like $1`;
 	try {
 		const { photoRows } = await dbQuery.query(weekQuery, [week]);
+		log('compose', { photoRows });
 		const list = await Promise.all(photoRows.map(async row => {
 			const { photoRow } = await dbQuery.query(photoQuery, [row.date_time]);
 			return {
