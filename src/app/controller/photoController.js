@@ -14,6 +14,8 @@ import {
 
 import { getLog } from '../util/log';
 
+const sharp = require('sharp');
+
 const log = getLog('photoController');
 
 export const compose = async (req, res) => {
