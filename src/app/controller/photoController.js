@@ -34,6 +34,56 @@ export const compose = async (req, res) => {
 			};
 		}));
 		console.log(list);
+
+		const calendar = await list.reduce(async (previousCalendar, currentPhoto) => {
+			const metadata = await currentPhoto.photo.metadata();
+			const day = moment(currentPhoto.dateTime).date();
+			previousCalendar = await previousCalendar;
+			const dateList = previousCalendar.dateList;
+			let date = dateList[day];
+			if (!date) {
+				date = {};
+				dateList[day] = date;
+			}
+			let photo = date[currentPhoto.dateTime];
+			if (!photo) {
+				date[currentPhoto.dateTime] = currentPhoto.photo;
+			}
+			let maxCount = previousCalendar.maxCount;
+			maxCount = (!maxCount) ? 0 : maxCount;
+			maxCount = Math.max(maxCount, Object.keys(date).length);
+			let width = Math.max(previousCalendar.width, metadata.width);
+			let height = Math.max(previousCalendar.height, metadata.height);
+			return { dateList, maxCount, width, height };
+		}, {
+			dateList: {},
+			maxCount: 0,
+			width: 0,
+			height: 0
+		});
+
+		const numberOfDays = Object.keys(calendar.dateList).length;
+		const maxPerDay = calendar.maxCount;
+
+		const composite = await sharp({
+			create: {
+				width: numberOfDays * calendar.width,
+				height: maxPerDay * calendar.height,
+				channels: 3,
+				background: { r: 0, g: 0, b: 0 }
+			}
+		}).composite(
+			(await Promise.all(Object.values(calendar.dateList).map(
+				async (dateValue, dateIndex) => await Promise.all(Object.values(dateValue).map(
+					async (photoValue, photoIndex) => ({
+						input: await photoValue.png().toBuffer(),
+						top: photoIndex * calendar.height,
+						left: dateIndex * calendar.width
+					})
+				))
+			))).flat()
+		).toString('base64');
+
 		return res.status(status.success).send('test');
 	} catch (error) {
 		return buildError(log, 'compose', error, res);
