@@ -36,7 +36,9 @@ export const compose = async (req, res) => {
 		log('compose', { list });
 
 		const calendar = await list.reduce(async (previousCalendar, currentPhoto) => {
+			log('compose', { currentPhoto });
 			const metadata = await currentPhoto.photo.metadata();
+			log('compose', { metadata });
 			const day = moment(currentPhoto.dateTime).date();
 			previousCalendar = await previousCalendar;
 			const dateList = previousCalendar.dateList;
