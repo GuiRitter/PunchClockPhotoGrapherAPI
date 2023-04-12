@@ -84,7 +84,9 @@ export const compose = async (req, res) => {
 			))).flat()
 		).toString('base64');
 
-		return res.status(status.success).send(composite);
+		log('compose', { composite });
+
+		return res.status(status.success).send('test');
 	} catch (error) {
 		return buildError(log, 'compose', error, res);
 	}
