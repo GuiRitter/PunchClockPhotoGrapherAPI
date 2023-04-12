@@ -65,14 +65,14 @@ export const compose = async (req, res) => {
 		const numberOfDays = Object.keys(calendar.dateList).length;
 		const maxPerDay = calendar.maxCount;
 
-		const composite = await sharp({
+		const composite = (await (sharp({
 			create: {
 				width: numberOfDays * calendar.width,
 				height: maxPerDay * calendar.height,
 				channels: 3,
 				background: { r: 0, g: 0, b: 0 }
 			}
-		}).composite(
+		}).png().composite(
 			(await Promise.all(Object.values(calendar.dateList).map(
 				async (dateValue, dateIndex) => await Promise.all(Object.values(dateValue).map(
 					async (photoValue, photoIndex) => ({
@@ -82,12 +82,7 @@ export const compose = async (req, res) => {
 					})
 				))
 			))).flat()
-		);
-
-		const composite2 = composite.toString('base64');
-
-		log('compose', { composite, JSON: JSON.stringify(composite), keys: Object.keys(composite) });
-		log('compose', { composite2, JSON: JSON.stringify(composite2), keys: Object.keys(composite2) });
+		).toBuffer())).toString('base64');
 
 		return res.status(status.success).send('test');
 	} catch (error) {
