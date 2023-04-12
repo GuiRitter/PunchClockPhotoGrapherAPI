@@ -31,7 +31,7 @@ export const compose = async (req, res) => {
 			log('compose', { data_uri: photoRow[0].data_uri.length });
 			return {
 				dateTime: row.date_time,
-				photo: sharp(photoRow[0].data_uri)
+				photo: sharp(Buffer.from(photoRow[0].data_uri.substring(22), 'base64'))
 			};
 		}));
 		log('compose', { list });
