@@ -28,7 +28,6 @@ export const compose = async (req, res) => {
 		log('compose', { photoRows });
 		const list = await Promise.all(photoRows.map(async row => {
 			const { rows: photoRow } = await dbQuery.query(photoQuery, [row.date_time]);
-			log('compose', { data_uri: photoRow[0].data_uri.length });
 			return {
 				dateTime: row.date_time,
 				photo: sharp(Buffer.from(photoRow[0].data_uri.substring(22), 'base64'))
@@ -37,9 +36,7 @@ export const compose = async (req, res) => {
 		log('compose', { list });
 
 		const calendar = await list.reduce(async (previousCalendar, currentPhoto) => {
-			log('compose', { currentPhoto });
 			const metadata = await currentPhoto.photo.metadata();
-			log('compose', { metadata });
 			const day = moment(currentPhoto.dateTime).date();
 			previousCalendar = await previousCalendar;
 			const dateList = previousCalendar.dateList;
@@ -79,13 +76,7 @@ export const compose = async (req, res) => {
 			(await Promise.all(Object.values(calendar.dateList).map(
 				async (dateValue, dateIndex) => await Promise.all(Object.values(dateValue).map(
 					async (photoValue, photoIndex) => ({
-						input: await (async () => {
-							log('compose', { photoValue });
-							log('compose', { 'photoValue.png': photoValue.png() });
-							log('compose', { 'photoValue.png.toBuffer': photoValue.png().toBuffer() });
-							log('compose', { 'await photoValue.png.toBuffer': await photoValue.png().toBuffer() });
-							return await photoValue.png().toBuffer();
-						})(),
+						input: await (async () => await photoValue.png().toBuffer())(),
 						top: photoIndex * calendar.height,
 						left: dateIndex * calendar.width
 					})
@@ -93,7 +84,7 @@ export const compose = async (req, res) => {
 			))).flat()
 		).toString('base64');
 
-		return res.status(status.success).send('test');
+		return res.status(status.success).send(composite);
 	} catch (error) {
 		return buildError(log, 'compose', error, res);
 	}
