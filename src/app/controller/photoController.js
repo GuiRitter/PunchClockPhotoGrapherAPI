@@ -82,9 +82,12 @@ export const compose = async (req, res) => {
 					})
 				))
 			))).flat()
-		).toString('base64');
+		);
+
+		const composite2 = composite.toString('base64');
 
 		log('compose', { composite, JSON: JSON.stringify(composite), keys: Object.keys(composite) });
+		log('compose', { composite2, JSON: JSON.stringify(composite2), keys: Object.keys(composite2) });
 
 		return res.status(status.success).send('test');
 	} catch (error) {
