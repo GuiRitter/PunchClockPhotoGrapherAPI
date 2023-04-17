@@ -91,7 +91,7 @@ export const compose = async (req, res) => {
 };
 
 export const deletePhoto = async (req, res) => {
-	const { dateTime } = req.body;
+	const { dateTime } = req.query;
 	log('deletePhoto', { dateTime });
 	const query = `DELETE FROM photo WHERE date_time LIKE $1 RETURNING date_time, DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) AS week;`;
 	try {
@@ -105,7 +105,7 @@ export const deletePhoto = async (req, res) => {
 };
 
 export const deleteWeek = async (req, res) => {
-	const { week } = req.body;
+	const { week } = req.query;
 	log('deleteWeek', { week });
 	const query = `DELETE FROM photo WHERE DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) = $1 RETURNING date_time, DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) AS week;`;
 	try {
