@@ -2,10 +2,11 @@ import express from 'express';
 
 import verifyAuth from '../middleware/verifyAuth';
 
-import { get, list, put } from '../controller/photoController';
+import { deletePhoto, get, list, put } from '../controller/photoController';
 
 const router = express.Router();
 
+router.get('/delete', verifyAuth, deletePhoto);
 router.get('/get', verifyAuth, get);
 router.get('/list', verifyAuth, list);
 router.post('/put', verifyAuth, put);
