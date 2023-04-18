@@ -119,7 +119,7 @@ export const deleteWeek = async (req, res) => {
 };
 
 export const get = async (req, res) => {
-	const { dateTime } = req.query;
+	const { dateTime } = req.params;
 	const query = `SELECT date_time, data_uri FROM photo WHERE date_time like $1;`;
 	try {
 		const { rows } = await dbQuery.query(query, [dateTime]);

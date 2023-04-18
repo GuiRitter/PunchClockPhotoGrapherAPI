@@ -7,8 +7,8 @@ import { deletePhoto, get, list, put } from '../controller/photoController';
 const router = express.Router();
 
 router.delete('/:dateTime', verifyAuth, deletePhoto);
-router.get('/get', verifyAuth, get);
-router.get('/list', verifyAuth, list);
+router.get('/', verifyAuth, list);
+router.get('/:dateTime', verifyAuth, get);
 router.post('/put', verifyAuth, put);
 
 export default router;
