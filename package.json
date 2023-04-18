@@ -1,6 +1,6 @@
 {
 	"name": "punch_clock_photo_grapher",
-	"version": "0.5.10",
+	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
