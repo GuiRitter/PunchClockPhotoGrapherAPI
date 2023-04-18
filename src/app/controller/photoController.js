@@ -21,7 +21,7 @@ const log = getLog('photoController');
 export const compose = async (req, res) => {
 	const { week } = req.params;
 	log('compose', { week });
-	const weekQuery = `SELECT date_time FROM photo WHERE DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) = $1;`;
+	const weekQuery = `SELECT date_time FROM photo WHERE DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) = $1 ORDER BY date_time;`;
 	const photoQuery = `SELECT data_uri FROM photo WHERE date_time like $1;`;
 	try {
 		const { rows: photoRows } = await dbQuery.query(weekQuery, [week]);
