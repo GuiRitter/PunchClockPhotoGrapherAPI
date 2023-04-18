@@ -9,6 +9,6 @@ const router = express.Router();
 router.delete('/:dateTime', verifyAuth, deletePhoto);
 router.get('/', verifyAuth, list);
 router.get('/:dateTime', verifyAuth, get);
-router.post('/put', verifyAuth, put);
+router.post('/', verifyAuth, put);
 
 export default router;
