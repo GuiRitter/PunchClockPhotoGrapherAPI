@@ -37,7 +37,7 @@ export const compose = async (req, res) => {
 
 		const calendar = await list.reduce(async (previousCalendar, currentPhoto) => {
 			const metadata = await currentPhoto.photo.metadata();
-			const day = moment(currentPhoto.dateTime).date();
+			const day = moment(currentPhoto.dateTime).format('YYYY-DDDD');
 			previousCalendar = await previousCalendar;
 			const dateList = previousCalendar.dateList;
 			let date = dateList[day];
@@ -61,6 +61,7 @@ export const compose = async (req, res) => {
 			width: 0,
 			height: 0
 		});
+		log('compose', { calendar });
 
 		const numberOfDays = Object.keys(calendar.dateList).length;
 		const maxPerDay = calendar.maxCount;
