@@ -12,6 +12,8 @@ import {
 	successMessage
 } from '../helper/status';
 
+export const checkToken = async (req, res) => res.status(status.success).send(successMessage);
+
 export const signIn = async (req, res) => {
 	const { login, password } = req.body;
 	if (!isNonEmptyString(login)) {
