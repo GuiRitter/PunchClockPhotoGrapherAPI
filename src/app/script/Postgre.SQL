@@ -32,11 +32,11 @@ CREATE FUNCTION test_photo_date_time_format() RETURNS trigger AS $$
 DECLARE
   matches boolean;
 BEGIN
-  select new.date_time similar to '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z|((\+|-)([0-9]{2}:[0-9]{2})))' into matches;
+  SELECT new.date_time SIMILAR TO '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.][0-9]{3,6}(Z|((\+|-)([0-9]{2}:[0-9]{2})))' INTO matches;
   IF matches THEN
     RETURN NEW;
   END IF;
-  RAISE EXCEPTION 'Photo date/time must be formatted according to ISO 8601 (without milliseconds).';
+  RAISE EXCEPTION 'Photo date/time must be formatted according to ISO 8601.';
 END;
 $$ LANGUAGE plpgsql;
 CREATE TRIGGER photo_date_time_format BEFORE INSERT OR UPDATE ON photo
