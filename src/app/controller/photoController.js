@@ -112,7 +112,7 @@ export const deleteWeek = async (req, res) => {
 	try {
 		const result = await dbQuery.query(query, [week]);
 		const rows = result.rows;
-		log('deleteWeek', { result });
+		log('deleteWeek', { result, rows: result && result.rows || 'null' });
 		return res.status(status.success).send(rows);
 	} catch (error) {
 		return buildError(log, 'deleteWeek', error, res);
