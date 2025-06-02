@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { Jimp } from "jimp";
+import moment from 'moment';
 
 import dbQuery from '../db/dev/dbQuery';
 
@@ -29,7 +29,7 @@ export const compose = async (req, res) => {
 			const { rows: photoRow } = await dbQuery.query(photoQuery, [row.date_time]);
 			return {
 				dateTime: row.date_time,
-				photo: Jimp.fromBuffer(Buffer.from(photoRow[0].data_uri.substring(22), 'base64'))
+				photo: await Jimp.fromBuffer(Buffer.from(photoRow[0].data_uri.substring(22), 'base64'))
 			};
 		}));
 		log('compose', { list });
@@ -96,7 +96,7 @@ export const compose = async (req, res) => {
 				}
 			}, null);
 
-		const composite = (await calendar.dateList.getBase64()).replace(/^data:image\/png;base64,/, '');
+		const composite = (await calendar.dateList.getBase64('image/png')).replace(/^data:image\/png;base64,/, '');
 
 		return res.status(status.success).send(composite);
 	} catch (error) {
