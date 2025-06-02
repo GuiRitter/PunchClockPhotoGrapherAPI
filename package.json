@@ -1,6 +1,6 @@
 {
 	"name": "punch_clock_photo_grapher",
-	"version": "1.1.5",
+	"version": "1.1.6",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -24,10 +24,10 @@
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
+		"jimp": "^1.6.0",
 		"jsonwebtoken": "^9.0.2",
 		"moment": "^2.29.1",
 		"pg": "^8.7.1",
-		"sharp": "^0.32.0",
 		"uuid": "^8.3.2"
 	}
 }
