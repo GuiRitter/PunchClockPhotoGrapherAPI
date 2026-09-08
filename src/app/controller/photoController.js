@@ -133,6 +133,12 @@ export const deleteWeek = async (req, res) => {
 };
 
 export const get = async (req, res) => {
+	log('get', {
+		body: req.body,
+		params: req.params,
+		query: req.query,
+	});
+
 	const { dateTime } = req.params;
 	const query = `SELECT date_time, data_uri FROM photo WHERE date_time like $1;`;
 	try {
@@ -144,6 +150,12 @@ export const get = async (req, res) => {
 };
 
 export const list = async (req, res) => {
+	log('list', {
+		body: req.body,
+		params: req.params,
+		query: req.query,
+	});
+
 	const query = `SELECT date_time, DATE_PART('week', TO_DATE(date_time, 'YYYY-MM-DD')) AS week FROM photo ORDER BY date_time;`;
 	try {
 		const { rows } = await dbQuery.query(query);
